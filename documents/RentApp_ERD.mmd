@@ -1,0 +1,105 @@
+erDiagram
+    USER_PROFILES ||--o| TENANTS : "may map to"
+    SOCIETIES ||--o{ PROPERTIES : contains
+    PROPERTIES ||--o{ TENANCIES : history
+    TENANTS ||--o{ TENANCIES : occupies
+    TENANCIES ||--o{ RENT_BILLS : generates
+    TENANCIES ||--o{ UTILITY_BILLS : incurs
+    TENANCIES ||--o{ PAYMENTS : submits
+    PAYMENTS ||--o{ PAYMENT_PROOFS : includes
+    PAYMENTS ||--o{ PAYMENT_ALLOCATIONS : allocates
+    RENT_BILLS ||--o{ PAYMENT_ALLOCATIONS : receives
+    UTILITY_BILLS ||--o{ PAYMENT_ALLOCATIONS : receives
+    USER_PROFILES ||--o{ AUDIT_LOGS : performs
+
+    USER_PROFILES {
+        uuid id PK "Supabase Auth user UUID"
+        string role "OWNER or TENANT"
+        string full_name
+        string phone
+        boolean is_active
+        timestamptz created_at
+    }
+    SOCIETIES {
+        uuid id PK
+        string name
+        string address
+        boolean is_active
+    }
+    PROPERTIES {
+        uuid id PK
+        uuid society_id FK
+        string flat_number
+        string status
+    }
+    TENANTS {
+        uuid id PK
+        uuid user_id FK "nullable until invite accepted"
+        string full_name
+        string phone
+        string email
+    }
+    TENANCIES {
+        uuid id PK
+        uuid property_id FK
+        uuid tenant_id FK
+        date start_date
+        date end_date
+        numeric monthly_rent
+        numeric security_deposit
+        int rent_due_day
+        string status
+    }
+    RENT_BILLS {
+        uuid id PK
+        uuid tenancy_id FK
+        date billing_period
+        date due_date
+        numeric amount_due
+        string notes
+    }
+    UTILITY_BILLS {
+        uuid id PK
+        uuid tenancy_id FK
+        string utility_type
+        date billing_period
+        date due_date
+        numeric amount_due
+        string document_path
+    }
+    PAYMENTS {
+        uuid id PK
+        uuid tenancy_id FK
+        numeric claimed_amount
+        string method
+        string transaction_reference
+        date payment_date
+        string status
+        uuid verified_by FK
+        timestamptz verified_at
+    }
+    PAYMENT_PROOFS {
+        uuid id PK
+        uuid payment_id FK
+        string object_path
+        string original_filename
+        string mime_type
+        int file_size_bytes
+    }
+    PAYMENT_ALLOCATIONS {
+        uuid id PK
+        uuid payment_id FK
+        uuid rent_bill_id FK "nullable"
+        uuid utility_bill_id FK "nullable"
+        numeric allocated_amount
+        uuid allocated_by FK
+        timestamptz created_at
+    }
+    AUDIT_LOGS {
+        uuid id PK
+        uuid actor_user_id FK
+        string action
+        string entity_type
+        uuid entity_id
+        timestamptz created_at
+    }
