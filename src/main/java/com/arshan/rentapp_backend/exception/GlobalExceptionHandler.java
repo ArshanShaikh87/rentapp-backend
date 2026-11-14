@@ -1,5 +1,6 @@
 package com.arshan.rentapp_backend.exception;
 
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -35,5 +36,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<String> handleUsernameNotFoundException(UsernameNotFoundException e){
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Username or Password");
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<String>ResourceNotFoundException(ResourceNotFoundException e){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Resource Not Found");
     }
 }

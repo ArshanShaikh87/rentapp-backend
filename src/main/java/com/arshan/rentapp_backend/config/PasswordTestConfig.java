@@ -12,7 +12,10 @@ public class PasswordTestConfig {
     @Bean
     public CommandLineRunner commandLineRunner(PasswordEncoder passwordEncoder) {
        return args -> {
-           System.out.print("Generated Password Hash :");
+           String rawPassword = "Rent@12345"; // Yahan apna password likhein
+           String encodedPassword = passwordEncoder.encode(rawPassword);
+           System.out.println("Generated Password Hash : " + encodedPassword);
+
     };
     }
 }
