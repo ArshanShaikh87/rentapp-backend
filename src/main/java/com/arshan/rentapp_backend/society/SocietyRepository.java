@@ -1,6 +1,5 @@
 package com.arshan.rentapp_backend.society;
 
-import com.arshan.rentapp_backend.society.dto.SocietyResponse;
 import com.arshan.rentapp_backend.user.RentAppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

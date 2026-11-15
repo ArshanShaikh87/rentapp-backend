@@ -3,7 +3,7 @@ package com.arshan.rentapp_backend.society;
 import com.arshan.rentapp_backend.security.RentAppUserDetails;
 import com.arshan.rentapp_backend.society.dto.CreateSocietyRequest;
 import com.arshan.rentapp_backend.society.dto.DeleteSocietyResponse;
-import com.arshan.rentapp_backend.society.dto.SocietyResponse;
+import com.arshan.rentapp_backend.society.dto.CreateSocietyResponse;
 import com.arshan.rentapp_backend.society.dto.UpdateSocietyRequest;
 import com.arshan.rentapp_backend.user.RentAppUser;
 import com.arshan.rentapp_backend.user.UserRole;
@@ -13,9 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.web.bind.annotation.PutMapping;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +27,7 @@ public class SocietyService {
     }
 
     // Endpoint : POST /api/v1/societies
-    public SocietyResponse createSociety(
+    public CreateSocietyResponse createSociety(
             CreateSocietyRequest createSocietyRequest) throws AccessDeniedException {
 
         RentAppUser user = getCurrentUser();
@@ -67,8 +65,8 @@ public class SocietyService {
     }
 
     //Mapper method
-    private SocietyResponse mapToSocietyResponse(Society society){
-        return new SocietyResponse(
+    private CreateSocietyResponse mapToSocietyResponse(Society society){
+        return new CreateSocietyResponse(
                 society.getId(),
                 society.getName(),
                 society.getAddress(),
@@ -80,16 +78,16 @@ public class SocietyService {
     }
 
     // Endpoint : GET /api/v1/societies
-    public List<SocietyResponse> getAllSocieties(){
+    public List<CreateSocietyResponse> getAllSocieties(){
             RentAppUser user = getCurrentUser();
             List<Society> societies = societyRepository.findByOwnerAndIsActiveTrue(user);
-            List<SocietyResponse> societyResp = societies.stream().map(
+            List<CreateSocietyResponse> societyResp = societies.stream().map(
                     this :: mapToSocietyResponse).toList();
             return societyResp;
     }
 
     //Endpoint : GET /api/v1/societies/{id}
-    public SocietyResponse getSociety(long id){
+    public CreateSocietyResponse getSociety(long id){
         RentAppUser user = getCurrentUser();
         Optional<Society> society = societyRepository.findByIdAndOwnerAndIsActiveTrue(id , user);
         if(society.isPresent()){
@@ -101,7 +99,7 @@ public class SocietyService {
     }
 
     //Endpoint : PUT /api/v1/societies/{id}
-    public SocietyResponse updateSociety(long id , UpdateSocietyRequest updateSocietyRequest){
+    public CreateSocietyResponse updateSociety(long id , UpdateSocietyRequest updateSocietyRequest){
         RentAppUser user = getCurrentUser();
         Optional<Society> existingSociety = societyRepository.findByIdAndOwnerAndIsActiveTrue(id , user);
         if(existingSociety.isEmpty()){

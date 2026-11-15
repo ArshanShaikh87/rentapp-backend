@@ -2,14 +2,16 @@ package com.arshan.rentapp_backend.society;
 
 import com.arshan.rentapp_backend.society.dto.CreateSocietyRequest;
 import com.arshan.rentapp_backend.society.dto.DeleteSocietyResponse;
-import com.arshan.rentapp_backend.society.dto.SocietyResponse;
+import com.arshan.rentapp_backend.society.dto.CreateSocietyResponse;
 import com.arshan.rentapp_backend.society.dto.UpdateSocietyRequest;
 import jakarta.validation.Valid;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@Validated
 @RequestMapping("/api/v1/societies")
 public class SocietyController {
 
@@ -21,27 +23,27 @@ public class SocietyController {
 
         //Endpoint : Create Society
         @PostMapping
-        public SocietyResponse addSociety(
+        public CreateSocietyResponse addSociety(
                 @Valid @RequestBody CreateSocietyRequest createSocietyRequest) {
-            SocietyResponse response = societyService.createSociety(createSocietyRequest);
+            CreateSocietyResponse response = societyService.createSociety(createSocietyRequest);
             return response;
         }
 
         //Endpoint : Get All Societies
         @GetMapping
-        public List<SocietyResponse> getSocieties() {
+        public List<CreateSocietyResponse> getSocieties() {
             return societyService.getAllSocieties();
         }
 
         //Endpoint : Get Society by id
         @GetMapping("/{id}")
-        public SocietyResponse getSociety(@PathVariable long id) {
+        public CreateSocietyResponse getSociety(@PathVariable long id) {
            return societyService.getSociety(id);
         }
 
         //EndPoint : Update Society by id
         @PutMapping("/{id}")
-        public SocietyResponse updateSociety(
+        public CreateSocietyResponse updateSociety(
                 @PathVariable long id,
                 @Valid @RequestBody UpdateSocietyRequest updateSocietyRequest) {
             return societyService.updateSociety(id, updateSocietyRequest);

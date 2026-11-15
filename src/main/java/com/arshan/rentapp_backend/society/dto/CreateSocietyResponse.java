@@ -1,8 +1,6 @@
 package com.arshan.rentapp_backend.society.dto;
 
-import jakarta.validation.constraints.NotBlank;
-
-public record SocietyResponse(
+public record CreateSocietyResponse(
         Long id,
         String name,
         String address,
